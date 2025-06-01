@@ -6,10 +6,10 @@
       "password": "demo",
       "id": 1,
       "balance": {
-        "RUB": 1100,
+        "RUB": 1156,
         "USD": 30,
         "EUR": 30,
-        "NTC": 3000
+        "NTC": 3200
       }
     },
     {
@@ -31,7 +31,7 @@
       "password": "demo",
       "id": 3,
       "balance": {
-        "RUB": 20000,
+        "RUB": 20050,
         "USD": 300,
         "EUR": 500,
         "NTC": 50000

@@ -76,39 +76,27 @@ function setMessage(text, type) {
   
       if (response.success) {
         console.log('Баланс пополнен успешно!');
-        ApiConnector.current((userResponse) => {  
-          if (userResponse.success) {
-            ProfileWidget.showProfile(userResponse);
-          } else {
-            console.error('Ошибка при обновлении данных пользователя:', userResponse.error);
-          }
-        });
-        setMessage('Баланс успешно пополнен!', 'success'); 
+        ProfileWidget.showProfile(response.data); 
+        moneyManager.setMessage('Баланс успешно пополнен!', 'success'); 
       } else {
         console.error('Ошибка при пополнении баланса:', response.error);
-        setMessage(`Ошибка при пополнении баланса: ${response.error}`, 'error'); 
+        moneyManager.setMessage(`Ошибка при пополнении баланса: ${response.error}`, 'error'); 
       }
     });
   };
 
   // Конвертирование валюты
-moneyManager.conversionMoneyCallback = (data) => {
+  moneyManager.conversionMoneyCallback = (data) => {
     ApiConnector.convertMoney(data, (response) => {
       console.log('Ответ от сервера при конвертации валюты:', response);
   
       if (response.success) {
-        console.log('Валюта сконвертирована успешно!');
-        ApiConnector.current((userResponse) => {  
-          if (userResponse.success) {
-            ProfileWidget.showProfile(userResponse);
-          } else {
-            console.error('Ошибка при обновлении данных пользователя:', userResponse.error);
-          }
-        });
-        setMessage('Валюта успешно сконвертирована!', 'success'); 
+        console.log('Конвертация успешна!');
+        ProfileWidget.showProfile(response.data); 
+        moneyManager.setMessage('Конвертация успешна!', 'success'); 
       } else {
         console.error('Ошибка при конвертации валюты:', response.error);
-        setMessage(`Ошибка при конвертации валюты: ${response.error}`, 'error'); 
+        moneyManager.setMessage(`Ошибка при конвертации валюты: ${response.error}`, 'error'); 
       }
     });
   };
@@ -116,21 +104,15 @@ moneyManager.conversionMoneyCallback = (data) => {
   // Перевод валюты
   moneyManager.sendMoneyCallback = (data) => {
     ApiConnector.transferMoney(data, (response) => {
-      console.log('Ответ от сервера при переводе валюты:', response);
+      console.log('Ответ от сервера при переводе денег:', response);
   
       if (response.success) {
-        console.log('Перевод выполнен успешно!');
-        ApiConnector.current((userResponse) => {  
-          if (userResponse.success) {
-            ProfileWidget.showProfile(userResponse);
-          } else {
-            console.error('Ошибка при обновлении данных пользователя:', userResponse.error);
-          }
-        });
-        setMessage('Перевод выполнен успешно!', 'success'); 
+        console.log('Перевод успешен!');
+        ProfileWidget.showProfile(response.data); 
+        moneyManager.setMessage('Перевод выполнен успешно!', 'success'); 
       } else {
-        console.error('Ошибка при переводе валюты:', response.error);
-        setMessage(`Ошибка при переводе валюты: ${response.error}`, 'error'); 
+        console.error('Ошибка при переводе денег:', response.error);
+        moneyManager.setMessage(`Ошибка при переводе денег: ${response.error}`, 'error'); 
       }
     });
   };
@@ -145,7 +127,7 @@ ApiConnector.getFavorites((response) => {
     console.log('Список избранного получен успешно!');
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
-    favoritesWidget.updateUsersList(response.data);
+    moneyManager.updateUsersList(response.data);
   } else {
     console.error('Ошибка при получении списка избранного:', response.error);
   }
@@ -161,8 +143,9 @@ favoritesWidget.addUserCallback = (data) => {
       ApiConnector.getFavorites((favoritesResponse) => {
         if (favoritesResponse.success) {
           favoritesWidget.clearTable();
-          favoritesWidget.fillTable(favoritesResponse.data);
-          favoritesWidget.updateUsersList(favoritesResponse.data);
+          favoritesWidget.fillTable(response.data);  
+          moneyManager.updateUsersList(response.data); 
+          favoritesWidget.setMessage('Пользователь добавлен в избранное', 'success');
           setMessage('Пользователь добавлен в избранное', 'success');
         } else {
           console.error('Ошибка при обновлении списка избранного:', favoritesResponse.error);
@@ -185,9 +168,9 @@ favoritesWidget.removeUserCallback = (id) => {
       ApiConnector.getFavorites((favoritesResponse) => {
         if (favoritesResponse.success) {
           favoritesWidget.clearTable();
-          favoritesWidget.fillTable(favoritesResponse.data);
-          favoritesWidget.updateUsersList(favoritesResponse.data);
-          setMessage('Пользователь удален из избранного', 'success');
+          favoritesWidget.fillTable(response.data);  
+          moneyManager.updateUsersList(response.data);  
+          favoritesWidget.setMessage('Пользователь удален из избранного', 'success');
         } else {
           console.error('Ошибка при обновлении списка избранного:', favoritesResponse.error);
         }
