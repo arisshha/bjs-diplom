@@ -140,20 +140,13 @@ favoritesWidget.addUserCallback = (data) => {
 
     if (response.success) {
       console.log('Пользователь добавлен в избранное успешно!');
-      ApiConnector.getFavorites((favoritesResponse) => {
-        if (favoritesResponse.success) {
           favoritesWidget.clearTable();
           favoritesWidget.fillTable(response.data);
           moneyManager.updateUsersList(response.data);
-          moneyManager.setMessage(true, 'Пользователь добавлен в избранное'); 
-        } else {
-          console.error('Ошибка при обновлении списка избранного:', favoritesResponse.error);
-          moneyManager.setMessage(false, favoritesResponse.error);
-        }
-      });
+          favoritesWidget.setMessage(true, 'Пользователь добавлен в избранное'); 
     } else {
       console.error('Ошибка при добавлении пользователя в избранное:', response.error);
-      moneyManager.setMessage(false, response.error);
+      favoritesWidget.setMessage(false, response.error);
     }
   });
 };
@@ -165,20 +158,13 @@ favoritesWidget.removeUserCallback = (id) => {
 
     if (response.success) {
       console.log('Пользователь удален из избранного успешно!');
-      ApiConnector.getFavorites((favoritesResponse) => {
-        if (favoritesResponse.success) {
           favoritesWidget.clearTable();
           favoritesWidget.fillTable(response.data);  
           moneyManager.updateUsersList(response.data);  
-          moneyManager.setMessage(true, 'Операция успешна! Пользователь удален');
-        } else {
-          console.error('Ошибка при обновлении списка избранного:', favoritesResponse.error);
-          moneyManager.setMessage(false, favoritesResponse.error);
-        }
-      });
+          favoritesWidget.setMessage(true, 'Операция успешна! Пользователь удален');
     } else {
       console.error('Ошибка при удалении пользователя из избранного:', response.error);
-      moneyManager.setMessage(false, response.error);
+      favoritesWidget.setMessage(false, response.error);
     }
   });
 };
